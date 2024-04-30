@@ -1,31 +1,26 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public static class Loader
+public class Loader : MonoBehaviour
 {
-    public enum Scene {
-        Menus,
-        Loader,
-        Game,
+    public void LoadGame()
+    {
+        StartCoroutine(LoadGameAsync());
     }
 
-    private static Action onLoaderCallback;
-
-    public static void load(Scene scene) {
-        onLoaderCallback = () => {
-            SceneManager.LoadScene(scene.ToString());
-        };
-
-        SceneManager.LoadScene(Scene.Loader.ToString());
-    }
-
-    public static void LoadCallback() {
-        if(onLoaderCallback != null) {
-            onLoaderCallback();
-            onLoaderCallback = null;
+    private IEnumerator LoadGameAsync()
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Game");
+        asyncLoad.allowSceneActivation = false;
+        while (!asyncLoad.isDone)
+        {
+            float progress = Mathf.Clamp01(asyncLoad.progress / 0.9f);
+            if (progress >= 1.0f)
+                asyncLoad.allowSceneActivation = true;
+            yield return null;
         }
     }
 }

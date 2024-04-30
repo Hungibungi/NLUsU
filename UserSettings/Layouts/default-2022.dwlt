@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PixelRect:
     serializedVersion: 2
-    x: 1276
-    y: 51
-    width: 875
-    height: 1340
+    x: 1075
+    y: 40
+    width: 1408
+    height: 1349
   m_ShowMode: 4
   m_Title: Game
   m_RootView: {fileID: 3}
-  m_MinSize: {x: 875, y: 300}
+  m_MinSize: {x: 875, y: 542}
   m_MaxSize: {x: 10000, y: 10000}
   m_Maximized: 0
 --- !u!114 &2
@@ -41,9 +41,9 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 30
-    width: 875
-    height: 1290
-  m_MinSize: {x: 200, y: 223}
+    width: 1408
+    height: 1299
+  m_MinSize: {x: 100, y: 123}
   m_MaxSize: {x: 4000, y: 4023}
   m_ActualView: {fileID: 6}
 --- !u!114 &3
@@ -66,8 +66,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 875
-    height: 1340
+    width: 1408
+    height: 1349
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
   m_UseTopView: 1
@@ -91,7 +91,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 875
+    width: 1408
     height: 30
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
@@ -112,8 +112,8 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 1320
-    width: 875
+    y: 1329
+    width: 1408
     height: 20
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
@@ -125,11 +125,11 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
-  m_EditorHideFlags: 1
+  m_EditorHideFlags: 0
   m_Script: {fileID: 12015, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MinSize: {x: 200, y: 200}
+  m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
     m_Text: Game
@@ -137,10 +137,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1276
-    y: 81
-    width: 875
-    height: 1271
+    x: 1075
+    y: 70
+    width: 1408
+    height: 1280
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -154,7 +154,7 @@ MonoBehaviour:
   m_SerializedViewNames:
   - UnityEditor.DeviceSimulation.SimulatorWindow
   m_SerializedViewValues:
-  - C:\NLUsU\Project NLUsU\Library\PlayModeViewStates\39f4f808bc6d61941b80e89922909675
+  - C:\NLUsU\Project NLUsU\Library\PlayModeViewStates\a55346704b71cfc4fadf07be4fd8ef05
   m_PlayModeViewName: GameView
   m_ShowGizmos: 0
   m_TargetDisplay: 0
@@ -195,23 +195,23 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 21
-      width: 875
-      height: 1250
-    m_Scale: {x: 0.4222973, y: 0.4222973}
-    m_Translation: {x: 437.5, y: 625}
+      width: 1408
+      height: 1259
+    m_Scale: {x: 0.42533785, y: 0.42533785}
+    m_Translation: {x: 704, y: 629.5}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -1036
+      x: -1655.1548
       y: -1480
-      width: 2072
+      width: 3310.3096
       height: 2960
     m_MinimalGUI: 1
-  m_defaultScale: 0.4222973
-  m_LastWindowPixelSize: {x: 875, y: 1271}
+  m_defaultScale: 0.42533785
+  m_LastWindowPixelSize: {x: 1408, y: 1280}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000001000000000000

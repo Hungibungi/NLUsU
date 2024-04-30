@@ -13,9 +13,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\NLUsU\\Project NLUsU\\Assembly-CSharp.csproj",
-      "projectName": "Assembly-CSharp",
-      "projectPath": "C:\\NLUsU\\Project NLUsU\\Assembly-CSharp.csproj",
+      "projectUniqueName": "C:\\NLUsU\\Project NLUsU\\Gentleland.SteampunkUI.DemoAndExample.csproj",
+      "projectName": "Gentleland.SteampunkUI.DemoAndExample",
+      "projectPath": "C:\\NLUsU\\Project NLUsU\\Gentleland.SteampunkUI.DemoAndExample.csproj",
       "packagesPath": "C:\\Users\\Hunga\\.nuget\\packages\\",
       "outputPath": "C:\\NLUsU\\Project NLUsU\\obj\\",
       "projectStyle": "PackageReference",
