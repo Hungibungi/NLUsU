@@ -27,7 +27,7 @@ public class SettingsIngame : MonoBehaviour
         _music_volume_slider.value = GameOptions.music_volume;
         _effects_volume_text.text = "Effects volume: " + (int)((GameOptions.effects_volume + 80) * 1.25);
         _effects_volume_slider.value = GameOptions.effects_volume;
-        _autosave_frequency_text.text = "Autosave frequency:\n" + GameOptions.autosave_frequency + " hours";
+        _autosave_frequency_text.text = "Save every " + GameOptions.autosave_frequency + " hours";
         _autosave_frequency_slider.value = GameOptions.autosave_frequency;
         read_save_slot_info.ReadSaveSlots();
     }
@@ -48,6 +48,6 @@ public class SettingsIngame : MonoBehaviour
     }
     public void setAutosaveFrequency(float frequency) {
         GameOptions.autosave_frequency = (int)frequency;
-        _autosave_frequency_text.text = "Autosave frequency:\n" + frequency + " hours";
+        _autosave_frequency_text.text = "Save every " + (int)frequency + " hours";
     }
 }

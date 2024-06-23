@@ -8,7 +8,7 @@ public static class GameOptions
     public static int difficulty = 2;
     public static int first_storm_timer = 4;
     public static int starting_resources = 4;
-    public static int starting_technologies = 4;
+    public static int starting_technologies = 2;
     public static int starting_temperature = 2;
     public static int overall_costs = 2;
     public static int overall_discontent = 2;

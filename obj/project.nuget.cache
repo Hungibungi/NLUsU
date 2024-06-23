@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kW7WFQK8E/vAgarIMiHJs0Q8nC16HyI+XF+o/auLc+/yppL9bge1IgbLUvrZ7ub1125EN3Z2xhrsrL6c3XU/BQ==",
+  "dgSpecHash": "pGJT+xkEx8IWxNvzH34mGv8HqObl5BNjAvyMrD4LPv50FtVLVZJJ4NU+GZh2B8rqYWnbMvA2HOA0wvSCa/b/2Q==",
   "success": true,
-  "projectFilePath": "C:\\NLUsU\\Project NLUsU\\Gentleland.SteampunkUI.DemoAndExample.csproj",
+  "projectFilePath": "C:\\NLUsU\\Project NLUsU\\Assembly-CSharp.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

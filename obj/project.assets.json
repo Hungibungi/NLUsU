@@ -1,11 +1,46 @@
 {
   "version": 3,
   "targets": {
-    ".NETStandard,Version=v2.1": {}
+    ".NETStandard,Version=v2.1": {
+      "Gentleland.SteampunkUI.DemoAndExample/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.1",
+        "compile": {
+          "bin/placeholder/Gentleland.SteampunkUI.DemoAndExample.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Gentleland.SteampunkUI.DemoAndExample.dll": {}
+        }
+      },
+      "Gentleland.Utils.SteampunkUI/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.1",
+        "compile": {
+          "bin/placeholder/Gentleland.Utils.SteampunkUI.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Gentleland.Utils.SteampunkUI.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "Gentleland.SteampunkUI.DemoAndExample/1.0.0": {
+      "type": "project",
+      "path": "Gentleland.SteampunkUI.DemoAndExample.csproj",
+      "msbuildProject": "Gentleland.SteampunkUI.DemoAndExample.csproj"
+    },
+    "Gentleland.Utils.SteampunkUI/1.0.0": {
+      "type": "project",
+      "path": "Gentleland.Utils.SteampunkUI.csproj",
+      "msbuildProject": "Gentleland.Utils.SteampunkUI.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    ".NETStandard,Version=v2.1": []
+    ".NETStandard,Version=v2.1": [
+      "Gentleland.SteampunkUI.DemoAndExample >= 1.0.0",
+      "Gentleland.Utils.SteampunkUI >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\Hunga\\.nuget\\packages\\": {}
@@ -13,9 +48,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\NLUsU\\Project NLUsU\\Gentleland.SteampunkUI.DemoAndExample.csproj",
-      "projectName": "Gentleland.SteampunkUI.DemoAndExample",
-      "projectPath": "C:\\NLUsU\\Project NLUsU\\Gentleland.SteampunkUI.DemoAndExample.csproj",
+      "projectUniqueName": "C:\\NLUsU\\Project NLUsU\\Assembly-CSharp.csproj",
+      "projectName": "Assembly-CSharp",
+      "projectPath": "C:\\NLUsU\\Project NLUsU\\Assembly-CSharp.csproj",
       "packagesPath": "C:\\Users\\Hunga\\.nuget\\packages\\",
       "outputPath": "C:\\NLUsU\\Project NLUsU\\obj\\",
       "projectStyle": "PackageReference",
@@ -31,7 +66,14 @@
       "frameworks": {
         "netstandard2.1": {
           "targetAlias": "netstandard2.1",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\NLUsU\\Project NLUsU\\Gentleland.SteampunkUI.DemoAndExample.csproj": {
+              "projectPath": "C:\\NLUsU\\Project NLUsU\\Gentleland.SteampunkUI.DemoAndExample.csproj"
+            },
+            "C:\\NLUsU\\Project NLUsU\\Gentleland.Utils.SteampunkUI.csproj": {
+              "projectPath": "C:\\NLUsU\\Project NLUsU\\Gentleland.Utils.SteampunkUI.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

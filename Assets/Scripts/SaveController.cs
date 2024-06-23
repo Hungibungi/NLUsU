@@ -28,7 +28,9 @@ public class StrippedGameController{
     public int target_temperature;
     public bool is_first_storm;
     public int happyness;
-    public int protest_days;
+    public int protest_hours;
+    public int base_cooling;
+    public int leader_type;
 }
 
 public static class SaveController
@@ -99,7 +101,9 @@ public static class SaveController
             target_temperature = stripped_game_controller.target_temperature,
             is_first_storm = stripped_game_controller.is_first_storm,
             happyness = stripped_game_controller.happyness,
-            protest_days = stripped_game_controller.protest_days });
+            protest_hours = stripped_game_controller.protest_hours,
+            base_cooling = stripped_game_controller.base_cooling,
+            leader_type = stripped_game_controller.leader_type });
         string buildings = JsonConvert.SerializeObject(new { buildings = Buildings.buildings });
         string residents = JsonConvert.SerializeObject(new { residents = Residents.residents });
         SaveData save_data = new SaveData(game_options, game_controller, buildings, residents);

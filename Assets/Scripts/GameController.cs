@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -9,44 +10,231 @@ public class GameController : MonoBehaviour
 {
     //GameObjects
     [SerializeField]
-    private Text _clock;
+    public Text _clock;
     [SerializeField]
-    private Text _game_speed;
+    public Text _game_speed;
     [SerializeField]
-    private Image _day;
+    public Image _day;
     [SerializeField]
-    private Image _extended_day;
+    public Image _extended_day;
     [SerializeField]
-    private Image _night;
+    public Image _night;
     [SerializeField]
-    private Text _temperature;
+    public Text _temperature;
     [SerializeField]
-    private Text _next_trend_time;
+    public Text _next_trend_time;
     [SerializeField]
-    private Text _next_trend_temperature;
+    public Text _next_trend_temperature;
     [SerializeField]
-    private Text _next_storm;
+    public Text _next_storm;
     [SerializeField]
-    private Image _happy;
+    public Image _happy;
     [SerializeField]
-    private Image _neutral;
+    public Image _neutral;
     [SerializeField]
-    private Image _sad;
+    public Image _sad;
     [SerializeField]
-    private Image _protest;
+    public Image _protest;
     [SerializeField]
-    private Text _residents;
+    public Text _residents;
     [SerializeField]
-    private Image _residents_image;
+    public Image _residents_image;
     [SerializeField]
-    private Text _workers;
+    public Text _workers;
     [SerializeField]
-    private Text _children;
+    public Text _children;
     [SerializeField]
-    private Text _sick;
+    public Text _sick;
     [SerializeField]
-    private Image _sick_image;
+    public Image _sick_image;
+    [SerializeField]
+    public Text _food;
+    [SerializeField]
+    public Image _food_image;
+    [SerializeField]
+    public Text _power;
+    [SerializeField]
+    public Image _power_image;
+    [SerializeField]
+    public Text _building_material;
+    [SerializeField]
+    public Image _building_material_image;
+    [SerializeField]
+    public Text _iron;
+    [SerializeField]
+    public Image _iron_image;
+    [SerializeField]
+    public Text _end_game;
+    [SerializeField]
+    public GameObject _end_game_image;
+    [SerializeField]
+    public GameObject _leading_way;
+    [SerializeField]
+    public GameObject _law_menu;
+    [SerializeField]
+    public GameObject _policy_3x3;
+    [SerializeField]
+    public Image _policy_3x3_1x1;
+    [SerializeField]
+    public Image _policy_3x3_1x2;
+    [SerializeField]
+    public Image _policy_3x3_1x3;
+    [SerializeField]
+    public Image _policy_3x3_2x1;
+    [SerializeField]
+    public Image _policy_3x3_2x2;
+    [SerializeField]
+    public Image _policy_3x3_2x3;
+    [SerializeField]
+    public Image _policy_3x3_3x1;
+    [SerializeField]
+    public Image _policy_3x3_3x2;
+    [SerializeField]
+    public Image _policy_3x3_3x3;
+    [SerializeField]
+    public GameObject _policy_4x3;
+    [SerializeField]
+    public Image _policy_4x3_1x1;
+    [SerializeField]
+    public Image _policy_4x3_1x2;
+    [SerializeField]
+    public Image _policy_4x3_1x3;
+    [SerializeField]
+    public Image _policy_4x3_2x1;
+    [SerializeField]
+    public Image _policy_4x3_2x2;
+    [SerializeField]
+    public Image _policy_4x3_2x3;
+    [SerializeField]
+    public Image _policy_4x3_3x1;
+    [SerializeField]
+    public Image _policy_4x3_3x2;
+    [SerializeField]
+    public Image _policy_4x3_3x3;
+    [SerializeField]
+    public Image _policy_4x3_4x1;
+    [SerializeField]
+    public Image _policy_4x3_4x2;
+    [SerializeField]
+    public Image _policy_4x3_4x3;
+    [SerializeField]
+    public Text _policy_price;
+    [SerializeField]
+    public Text _policy_description;
+    [SerializeField]
+    public Button _activate_policy;
+    [SerializeField]
+    public GameObject _technology_menu;
+    [SerializeField]
+    public  GameObject _technology_1_1;
+    [SerializeField]
+    public  GameObject _technology_2_1;
+    [SerializeField]
+    public  GameObject _technology_2_2;
+    [SerializeField]
+    public  GameObject _technology_2_3;
+    [SerializeField]
+    public  GameObject _technology_2_4;
+    [SerializeField]
+    public  GameObject _technology_2_5;
+    [SerializeField]
+    public  GameObject _technology_next_3_1;
+    [SerializeField]
+    public  GameObject _technology_3_1;
+    [SerializeField]
+    public  GameObject _technology_next_3_2;
+    [SerializeField]
+    public  GameObject _technology_3_2;
+    [SerializeField]
+    public  GameObject _technology_next_3_3;
+    [SerializeField]
+    public  GameObject _technology_3_3;
+    [SerializeField]
+    public  GameObject _technology_next_3_4;
+    [SerializeField]
+    public  GameObject _technology_3_4;
+    [SerializeField]
+    public  GameObject _technology_next_3_5;
+    [SerializeField]
+    public  GameObject _technology_3_5;
+    [SerializeField]
+    public  GameObject _technology_next_4_1;
+    [SerializeField]
+    public  GameObject _technology_4_1;
+    [SerializeField]
+    public  GameObject _technology_next_4_2;
+    [SerializeField]
+    public  GameObject _technology_4_2;
+    [SerializeField]
+    public  GameObject _technology_next_4_3;
+    [SerializeField]
+    public  GameObject _technology_4_3;
+    [SerializeField]
+    public  GameObject _technology_next_4_4;
+    [SerializeField]
+    public  GameObject _technology_4_4;
+    [SerializeField]
+    public  GameObject _technology_next_4_5;
+    [SerializeField]
+    public  GameObject _technology_4_5;
+    [SerializeField]
+    public Text _technology_price;
+    [SerializeField]
+    public Text _technology_description;
+    [SerializeField]
+    public Button _research_technology;
+    [SerializeField]
+    public Text _food_production;
+    [SerializeField]
+    public Text _power_production;
+    [SerializeField]
+    public Text _building_material_production;
+    [SerializeField]
+    public Text _iron_production;
+    [SerializeField]
+    public  GameObject _building_slot_1;
+    [SerializeField]
+    public Text _building_slot_1_text;
+    [SerializeField]
+    public Button _building_slot_1_button;
+    [SerializeField]
+    public Button _building_slot_1_add_worker;
+    [SerializeField]
+    public Button _building_slot_1_remove_worker;
+    [SerializeField]
+    public Button _building_slot_1_add_child;
+    [SerializeField]
+    public Button _building_slot_1_remove_child;
+    [SerializeField]
+    public  GameObject _building_slot_2;
+    [SerializeField]
+    public Text _building_slot_2_text;
+    [SerializeField]
+    public Button _building_slot_2_button;
+    [SerializeField]
+    public Button _building_slot_2_add_worker;
+    [SerializeField]
+    public Button _building_slot_2_remove_worker;
+    [SerializeField]
+    public Button _building_slot_2_add_child;
+    [SerializeField]
+    public Button _building_slot_2_remove_child;
+    [SerializeField]
+    public  GameObject _building_slot_3;
+    [SerializeField]
+    public Text _building_slot_3_text;
+    [SerializeField]
+    public Button _building_slot_3_button;
+    [SerializeField]
+    public Button _building_slot_3_add_worker;
+    [SerializeField]
+    public Button _building_slot_3_remove_worker;
+    [SerializeField]
+    public Button _building_slot_3_add_child;
+    [SerializeField]
+    public Button _building_slot_3_remove_child;
     public ReadSaveSlotInfoInGame read_save_slot_info;
+    
 
     //variables
     public int start_time;
@@ -63,9 +251,21 @@ public class GameController : MonoBehaviour
     public int target_temperature;
     public bool is_first_storm = true;
     public int happyness = 50;
-    public int protest_days = 0;
+    public int protest_hours = 0;
+    public int base_cooling = 0;
+    public int leader_type = 0;
+    public int open_policy_tab;
+    public int open_policy;
+    public int open_technology_tab;
+    public int open_technology; 
+    public int day_cycle;
+    public int open_building_tab;
+    public int open_people_tab;
+    public bool build_intent;
 
     void Start(){
+        ChangeGameSpeed(1);
+
         // clock widget
         start_time = (int)Time.time;
         _clock.text = "1 am";
@@ -75,6 +275,12 @@ public class GameController : MonoBehaviour
         AdjustDayCycle();
 
         // resources widget
+        Buildings.buildings[0] = new Building.Warehouse();
+        ResourcesManager.food = 25 * GameOptions.starting_resources;
+        ResourcesManager.power = 100 * GameOptions.starting_resources;
+        ResourcesManager.building_material = 50 * GameOptions.starting_resources;
+        ResourcesManager.iron = 25 * GameOptions.starting_resources;
+        ResourcesManager.RefreshResourcesWidget(this);
 
         // weather widget
         target_temperature = 30 + (5 * (-3 + GameOptions.starting_temperature));
@@ -90,8 +296,35 @@ public class GameController : MonoBehaviour
         // happyness widget
         AdjustHappyness();
 
-        //residents widget
+        // residents widget
         AdjustResidents();
+
+        // starting technologies
+        switch(GameOptions.starting_technologies){
+            case 0:
+                Buildings.science_lab.active = true;
+                Technologies.ActivateTechnology(8, this);
+                Technologies.ActivateTechnology(34, this);
+                break;
+            case 1:
+                Buildings.science_lab.active = true;
+                Technologies.ActivateTechnology(8, this);
+                Technologies.ActivateTechnology(34, this);
+                Technologies.ActivateTechnology(18, this);
+                Technologies.ActivateTechnology(25, this);
+                Technologies.ActivateTechnology(44, this);
+                break;
+            case 2:
+                Buildings.science_lab.active = true;
+                Technologies.ActivateTechnology(8, this);
+                Technologies.ActivateTechnology(34, this);
+                Technologies.ActivateTechnology(18, this);
+                Technologies.ActivateTechnology(25, this);
+                Technologies.ActivateTechnology(44, this);
+                Technologies.ActivateTechnology(0, this);
+                Technologies.ActivateTechnology(52, this);
+                break;
+        }
 
         if(GameOptions.game_controller != null){
             LoadGameController(GameOptions.game_controller);
@@ -113,7 +346,9 @@ public class GameController : MonoBehaviour
         target_temperature = game_controller.target_temperature;
         is_first_storm = game_controller.is_first_storm;
         happyness = game_controller.happyness;
-        protest_days = game_controller.protest_days;
+        protest_hours = game_controller.protest_hours;
+        base_cooling = game_controller.base_cooling;
+        leader_type = game_controller.leader_type;
     }
 
     public void BackToMainMenu(){
@@ -163,11 +398,17 @@ public class GameController : MonoBehaviour
 
     private void NextTick(){
         CheckSave();
+        ResourcesManager.CalculateProduction(temperature, base_cooling, day_cycle);
+        ResourcesManager.GainHourlyResources();
+        ResourcesManager.RefreshResourcesWidget(this);
         AdjustClock();
         AdjustDayCycle();
         AdjustWeather();
+        AdjustSick();
         AdjustResidents();
         AdjustHappyness();
+        AdjustSideMenu();
+        Buildings.UpdateBuildings();
     }
 
     private void CheckSave(){
@@ -186,7 +427,9 @@ public class GameController : MonoBehaviour
             stripped_game_controller.target_temperature = target_temperature;
             stripped_game_controller.is_first_storm = is_first_storm;
             stripped_game_controller.happyness = happyness;
-            stripped_game_controller.protest_days = protest_days;
+            stripped_game_controller.protest_hours = protest_hours;
+            stripped_game_controller.base_cooling = base_cooling;
+            stripped_game_controller.leader_type = leader_type;
             SaveController.SaveGameData(stripped_game_controller, 0);
         }
     }
@@ -205,6 +448,10 @@ public class GameController : MonoBehaviour
         stripped_game_controller.current_storm_hour = current_storm_hour;
         stripped_game_controller.target_temperature = target_temperature;
         stripped_game_controller.is_first_storm = is_first_storm;
+        stripped_game_controller.happyness = happyness;
+        stripped_game_controller.protest_hours = protest_hours;
+        stripped_game_controller.base_cooling = base_cooling;
+        stripped_game_controller.leader_type = leader_type;
         SaveController.SaveGameData(stripped_game_controller, saveslot);
         read_save_slot_info.ReadSaveSlots();
     }
@@ -229,16 +476,19 @@ public class GameController : MonoBehaviour
                     _day.enabled = false;
                     _extended_day.enabled = false;
                     _night.enabled = true;
+                    day_cycle = 0;
                 }
                 if(current_hours >= 6 && current_hours < 8){
                     _day.enabled = false;
                     _extended_day.enabled = true;
                     _night.enabled = false;
+                    day_cycle = 1;
                 }
                 if(current_hours >= 8){
                     _day.enabled = true;
                     _extended_day.enabled = false;
                     _night.enabled = false;
+                    day_cycle = 2;
                 }
                 break;
             case false:
@@ -246,16 +496,19 @@ public class GameController : MonoBehaviour
                     _day.enabled = true;
                     _extended_day.enabled = false;
                     _night.enabled = false;
+                    day_cycle = 2;
                 }
                 if(current_hours >= 4 && current_hours < 6){
                     _day.enabled = false;
                     _extended_day.enabled = true;
                     _night.enabled = false;
+                    day_cycle = 1;
                 }
                 if(current_hours >= 6){
                     _day.enabled = false;
                     _extended_day.enabled = false;
                     _night.enabled = true;
+                    day_cycle = 0;
                 }
                 break;
         }
@@ -282,13 +535,13 @@ public class GameController : MonoBehaviour
 
     private void CalculateNextTrend(){
         if(next_storm_time - 4 > next_trend_time){
-            next_trend_temperature = 5 * (int)Random.Range(-3,4);
+            next_trend_temperature = 5 * (int)UnityEngine.Random.Range(-3,4);
             if(temperature + next_trend_temperature > target_temperature + 10 || temperature + next_trend_temperature < target_temperature - 10 || next_trend_temperature == 0){
                 CalculateNextTrend();
             }
             _next_trend_temperature.text = (next_trend_temperature >= 0 ? "+ " : "") + next_trend_temperature + "°C";
             _next_trend_temperature.color = next_trend_temperature > 0 ? Color.red : Color.blue;
-            next_trend_time = elapsed_hours + (int)Random.Range(1,4) * 24;
+            next_trend_time = elapsed_hours + (int)UnityEngine.Random.Range(1,4) * 24;
             _next_trend_time.text = "in " + ((int)(next_trend_time - elapsed_hours) / 24) + "d" + (next_trend_time - elapsed_hours) % 24 + "h";
         } else{
             CalculateNextTrendInStorm();
@@ -296,13 +549,13 @@ public class GameController : MonoBehaviour
     }
 
     private void CalculateNextTrendInStorm(){
-        next_trend_temperature = target_temperature + 5 * (int)Random.Range(-1,2) - temperature;
+        next_trend_temperature = target_temperature + 5 * (int)UnityEngine.Random.Range(-1,2) - temperature;
         if (next_trend_temperature == 0){
             CalculateNextTrendInStorm();
         }
         _next_trend_temperature.text = (next_trend_temperature >= 0 ? "+" : "") + next_trend_temperature + "°C";
         _next_trend_temperature.color = next_trend_temperature > 0 ? Color.red : Color.blue;
-        next_trend_time = elapsed_hours + (int)Random.Range(1,4) * 24;
+        next_trend_time = elapsed_hours + (int)UnityEngine.Random.Range(1,4) * 24;
         _next_trend_time.text = "in " + ((int)(next_trend_time - elapsed_hours) / 24) + "d" + (next_trend_time - elapsed_hours) % 24 + "h";
     }
 
@@ -351,6 +604,7 @@ public class GameController : MonoBehaviour
             if(is_first_storm){
                 temperature = temperature - 10;
                 is_first_storm = false;
+                _leading_way.SetActive(true);
             } else {
                 switch(GameOptions.storm_intensity){
                     case 1:
@@ -382,11 +636,42 @@ public class GameController : MonoBehaviour
             _temperature.text = temperature + "°C ";
             _temperature.color = (temperature - target_temperature) > 0 ? Color.red : Color.blue;
             _temperature.color = temperature == target_temperature ? Color.black : _temperature.color;
-            next_storm_time = elapsed_hours + 24 * (14 - (-3 + GameOptions.storm_intensity) - (1 * (int)Random.Range(-3,4)));
+            next_storm_time = elapsed_hours + 24 * (14 - (-3 + GameOptions.storm_intensity) - (1 * (int)UnityEngine.Random.Range(-3,4)));
         }
     }
 
-    private void AdjustResidents(){
+    private void AdjustSick(){
+        foreach(Resident res in Residents.residents){
+            if(!res.is_sick){
+                int multiplier = (res.overall_temperature - 25)>=0?0:res.overall_temperature - 25;
+                bool rng = UnityEngine.Random.Range(0, 999) < 1 + multiplier / 24;
+                if(rng && !res.is_sick){
+                    Residents.GotSick(res, elapsed_hours);
+                }
+            }
+            if(res.is_sick && res.medical == null){
+                bool rng = UnityEngine.Random.Range(0, 200) < 2;
+                if(rng){
+                    Residents.Died(res);
+                }
+                rng = UnityEngine.Random.Range(0, 200) < 1;
+                if(rng){
+                    Residents.Recovered(res);
+                }
+            }
+            if(res.medical != null){
+                float effective_treatment_speed = 1 / (res.medical.treatment_speed * (res.medical.current_workers * res.medical.workers_efficiency + res.medical.children_workers * res.medical.children_efficiency + res.medical.sick_workers * res.medical.sick_efficiency));
+                if(effective_treatment_speed == 0){
+                    res.medical.current_sick--;
+                    res.medical = null;
+                } else if(res.start_treatment + (int)(effective_treatment_speed * 72) == elapsed_hours){
+                    Residents.Recovered(res);
+                }
+            }
+        }
+    }
+
+    public void AdjustResidents(){
         int residents = Residents.residents.Length;
         int housing_space = Buildings.OverallHousingSpace();
         int workers = Residents.OverallWorkers();
@@ -404,41 +689,278 @@ public class GameController : MonoBehaviour
         _sick.text = sick + "\n---\n" + sick_place;
         _sick.color = sick - sick_place < 0 ? Color.black : Color.red;
         _sick_image.color = sick - sick_place < 0 ? Color.black : Color.red;
+
+        if(residents == 0){
+            LostGame(false);
+        }
     }
 
     private void AdjustHappyness(){
-        Residents.AdjustHappyness(temperature);
+        Residents.AdjustHappyness(temperature, base_cooling);
         happyness = Residents.OverallHappyness();
         
         _happy.enabled = false;
         _neutral.enabled = false;
         _sad.enabled = false;
         _protest.enabled = false;
-        switch(happyness){
-            case > 67:
-                _happy.enabled = true;
-                protest_days = 0;
+        switch(leader_type){
+            case 0:
+                switch(happyness){
+                    case > 66:
+                        _happy.enabled = true;
+                        Residents.happyness_state = "happy";
+                        protest_hours = 0;
+                        break;
+                    case > 33:
+                        _neutral.enabled = true;
+                        Residents.happyness_state = "neutral";
+                        protest_hours = 0;
+                        break;
+                    case > 0:
+                        _sad.enabled = true;
+                        Residents.happyness_state = "sad";
+                        protest_hours = 0;
+                        break;
+                    case <= 0:
+                        _protest.enabled = true;
+                        Residents.happyness_state = "sad";
+                        protest_hours++;
+                        break;
+                }
                 break;
-            case > 33:
-                _neutral.enabled = true;
-                protest_days = 0;
+            case 1:
+                switch(happyness){
+                    case > 33:
+                        _happy.enabled = true;
+                        Residents.happyness_state = "happy";
+                        protest_hours = 0;
+                        break;
+                    case > 0:
+                        _sad.enabled = true;
+                        Residents.happyness_state = "sad";
+                        protest_hours = 0;
+                        break;
+                    case <= 0:
+                        _protest.enabled = true;
+                        Residents.happyness_state = "sad";
+                        protest_hours++;
+                        break;
+                }
                 break;
-            case > 0:
+            case 2:
+                switch(happyness){
+                    case > 67:
+                        _happy.enabled = true;
+                        Residents.happyness_state = "happy";
+                        protest_hours = 0;
+                        break;
+                    case > 0:
+                        _neutral.enabled = true;
+                        Residents.happyness_state = "neutral";
+                        protest_hours = 0;
+                        break;
+                    case <= 0:
+                        _protest.enabled = true;
+                        Residents.happyness_state = "sad";
+                        protest_hours++;
+                        break;
+                }
+                break;
+            case 3:
                 _sad.enabled = true;
-                protest_days = 0;
-                break;
-            case <= 0:
-                _protest.enabled = true;
-                protest_days++;
+                Residents.happyness_state = "sad";
                 break;
         }
-
-        if(protest_days == 5){
-            LostGame();
+        if(protest_hours == 120){
+            LostGame(true);
         }
     }
 
-    private void LostGame(){
+    private void LostGame(bool protest){
+        ChangeGameSpeed(10);
+        _end_game_image.SetActive(true);
+        if(protest){
+            _end_game.text = "Your people had enough of you after\n5 days of protests, better luck next time!";
+        } else{
+            _end_game.text = "Your last resident just died,\nbetter luck next time!";
+        }
+    }
 
+    public void ChooseLeadingWay(int option){
+        Policies.ActivatePolicy(42 + option, this);
+    }
+
+    public void ChangePoliciesDisplayed(int page){
+        _policy_3x3.SetActive(false);
+        _policy_4x3.SetActive(false);
+        open_policy_tab = page;
+        switch(page){
+            case 0:
+                _policy_4x3.SetActive(true);
+                _policy_4x3_1x1.sprite = Sprites.resident_image;
+                _policy_4x3_1x2.sprite = Sprites.resident_image;
+                _policy_4x3_1x3.sprite = Sprites.resident_image;
+                _policy_4x3_2x1.sprite = Sprites.resident_image;
+                _policy_4x3_2x2.sprite = Sprites.resident_image;
+                _policy_4x3_2x3.sprite = Sprites.resident_image;
+                _policy_4x3_3x1.sprite = Sprites.happy_image;
+                _policy_4x3_3x2.sprite = Sprites.happy_image;
+                _policy_4x3_3x3.sprite = Sprites.happy_image;
+                _policy_4x3_4x1.sprite = Sprites.child_image;
+                _policy_4x3_4x2.sprite = Sprites.child_image;
+                _policy_4x3_4x3.sprite = Sprites.child_image;
+                break;
+            case 1:
+                _policy_3x3.SetActive(true);
+                _policy_3x3_1x1.sprite = Sprites.sick_image;
+                _policy_3x3_1x2.sprite = Sprites.sick_image;
+                _policy_3x3_1x3.sprite = Sprites.sick_image;
+                _policy_3x3_2x1.sprite = Sprites.sick_image;
+                _policy_3x3_2x2.sprite = Sprites.sick_image;
+                _policy_3x3_2x3.sprite = Sprites.sick_image;
+                _policy_3x3_3x1.sprite = Sprites.child_image;
+                _policy_3x3_3x2.sprite = Sprites.child_image;
+                _policy_3x3_3x3.sprite = Sprites.child_image;
+                break;
+            case 2:
+                _policy_4x3.SetActive(true);
+                _policy_4x3_1x1.sprite = Sprites.food_image;
+                _policy_4x3_1x2.sprite = Sprites.food_image;
+                _policy_4x3_1x3.sprite = Sprites.food_image;
+                _policy_4x3_2x1.sprite = Sprites.food_image;
+                _policy_4x3_2x2.sprite = Sprites.food_image;
+                _policy_4x3_2x3.sprite = Sprites.food_image;
+                _policy_4x3_3x1.sprite = Sprites.food_image;
+                _policy_4x3_3x2.sprite = Sprites.food_image;
+                _policy_4x3_3x3.sprite = Sprites.food_image;
+                _policy_4x3_4x1.sprite = Sprites.child_image;
+                _policy_4x3_4x2.sprite = Sprites.child_image;
+                _policy_4x3_4x3.sprite = Sprites.child_image;
+                break;
+            case 3:
+                _policy_3x3.SetActive(true);
+                _policy_3x3_1x1.sprite = Sprites.worker_image;
+                _policy_3x3_1x2.sprite = Sprites.worker_image;
+                _policy_3x3_1x3.sprite = Sprites.worker_image;
+                _policy_3x3_2x1.sprite = Sprites.child_image;
+                _policy_3x3_2x2.sprite = Sprites.child_image;
+                _policy_3x3_2x3.sprite = Sprites.child_image;
+                _policy_3x3_3x1.sprite = Sprites.sick_image;
+                _policy_3x3_3x2.sprite = Sprites.sick_image;
+                _policy_3x3_3x3.sprite = Sprites.sick_image;
+                break;
+        }
+    }
+
+    public void SetOpenPolicy(int id){
+        switch(open_policy_tab){
+            case 0:
+                open_policy = id;
+                break;
+            case 1:
+                open_policy = id + 12;
+                break;
+            case 2:
+                open_policy = id + 21;
+                break;
+            case 3:
+                open_policy = id + 33;
+                break;
+        }
+        _policy_price.text = Policies.policies[open_policy].cooldown_time + " hours cooldown";
+        _policy_description.text = Policies.policies[open_policy].description;
+        _activate_policy.interactable = true;
+        if(Policies.policies[open_policy].prerequisite != -1 && !Policies.active_policies[Policies.policies[open_policy].prerequisite] || Policies.active_policies[open_policy]){
+            _activate_policy.interactable = false;
+        }
+    }
+
+        public void ChoosePolicy(){
+        Policies.ActivatePolicy(open_policy, this);
+        Policies.next_policy = elapsed_hours + Policies.policies[open_policy].cooldown_time;
+        _law_menu.GetComponent<Image>().color = Color.red;
+        _law_menu.GetComponent<Button>().interactable = false;
+    }
+
+    public void ChangeTechnologiesDisplayed(int page){
+        open_technology_tab = page;
+        Technologies.ChangeTechnologyPage(page, this);
+    }
+
+    public void SetOpenTechnology(int id){
+        open_technology = Technologies.SetOpenTechnology(id, this);
+    }
+
+    public void ChooseTechnology(){
+        Technologies.currently_researching = open_technology;
+        Technology technology = Technologies.technologies[open_technology];
+        ResourcesManager.research_progress = 0;
+        ResourcesManager.PayResources(0,0,technology.building_material_cost,technology.iron_cost);
+        ResourcesManager.RefreshResourcesWidget(this);
+        _technology_menu.GetComponent<Image>().color = Color.red;
+        _technology_menu.GetComponent<Button>().interactable = false;
+    }
+
+    private void AdjustSideMenu(){
+        if(Policies.next_policy == elapsed_hours){
+            _law_menu.GetComponent<Image>().color = Color.black;
+            _law_menu.GetComponent<Button>().interactable = true;
+        }
+        if(Technologies.technologies[Technologies.currently_researching].research_time <= ResourcesManager.research_progress && !Technologies.active_technologies[Technologies.currently_researching]){
+            Technologies.ActivateTechnology(Technologies.currently_researching, this);
+            _technology_menu.GetComponent<Image>().color = Color.black;
+            _technology_menu.GetComponent<Button>().interactable = true;
+        }
+    }
+
+    public void ChangeBuildingIntent(bool intent){
+        build_intent = intent;
+    }
+
+    public void ChangeBuildingsDisplayed(int page){
+        open_building_tab = page;
+        Buildings.ChangeBuildingsDisplayed(page, this);
+    }
+
+    public void BuildBuilding(int slot){
+        Buildings.BuildBuilding(slot, this);
+        Buildings.ChangeBuildingsDisplayed(open_building_tab, this);
+    }
+
+    public void ChangePeoplePage(int page){
+        open_people_tab = page+1;
+        Buildings.ChangeBuildingsDisplayed(page+1, this);
+    }
+
+    public void AddWorker(int slot){
+        Residents.ManageWorkers(slot, 0, this);
+        Buildings.ChangeBuildingsDisplayed(open_people_tab, this);
+        AdjustResidents();
+        ResourcesManager.CalculateProduction(temperature, base_cooling, day_cycle);
+        ResourcesManager.RefreshResourcesWidget(this);
+    }
+
+    public void RemoveWorker(int slot){
+        Residents.ManageWorkers(slot, 1, this);
+        Buildings.ChangeBuildingsDisplayed(open_people_tab, this);
+        AdjustResidents();
+        ResourcesManager.CalculateProduction(temperature, base_cooling, day_cycle);
+        ResourcesManager.RefreshResourcesWidget(this);
+    }
+
+    public void AddChild(int slot){
+        Residents.ManageWorkers(slot, 2, this);
+        Buildings.ChangeBuildingsDisplayed(open_people_tab, this);
+        AdjustResidents();
+        ResourcesManager.CalculateProduction(temperature, base_cooling, day_cycle);
+        ResourcesManager.RefreshResourcesWidget(this);
+    }
+
+    public void RemoveChild(int slot){
+        Residents.ManageWorkers(slot, 3, this);
+        Buildings.ChangeBuildingsDisplayed(open_people_tab, this);
+        AdjustResidents();
+        ResourcesManager.CalculateProduction(temperature, base_cooling, day_cycle);
+        ResourcesManager.RefreshResourcesWidget(this);
     }
 }

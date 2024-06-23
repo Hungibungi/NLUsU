@@ -95,12 +95,24 @@ public class NewGame : MonoBehaviour
         if(difficulty != 0){
             UpdateFirstStormTimer(6 - (int)difficulty);
             UpdateStartingResources(6 - (int)difficulty);
-            UpdateStartingTechnologies(6 - (int)difficulty);
             UpdateStartingTemperature((int)difficulty);
             UpdateOverallCosts((int)difficulty);
             UpdateOverallDiscontent((int)difficulty);
             UpdateStormDuration((int)difficulty);
             UpdateStormIntensity((int)difficulty);
+            switch((int)difficulty){
+                case 1:
+                case 2:
+                    UpdateStartingTechnologies(2);
+                    break;
+                case 3:
+                case 4:
+                    UpdateStartingTechnologies(1);
+                    break;
+                case 5:
+                    UpdateStartingTechnologies(0);
+                    break;
+            }
         }
     }
 
@@ -126,8 +138,22 @@ public class NewGame : MonoBehaviour
         GameOptions.starting_technologies = (int)starting_technologies;
         _starting_technologies.text = "Starting technologies: " + GameOptions.starting_technologies;
         _starting_technologies_slider.value = GameOptions.starting_technologies;
-        if (GameOptions.starting_technologies != 6 - GameOptions.difficulty){
-            _difficulty_slider.value = 0;
+        switch(GameOptions.starting_technologies){
+            case 0:
+                if(GameOptions.difficulty != 5){
+                    _difficulty_slider.value = 0;
+                }
+                break;
+            case 1:
+                if(GameOptions.difficulty != 3 && GameOptions.difficulty != 4){
+                    _difficulty_slider.value = 0;
+                }
+                break;
+            case 2:
+                if(GameOptions.difficulty != 1 && GameOptions.difficulty != 2){
+                    _difficulty_slider.value = 0;
+                }
+                break;
         }
     }
 
