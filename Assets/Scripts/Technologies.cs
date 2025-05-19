@@ -1,9 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
-using System.Resources;
-using UnityEditor.iOS;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,12 +24,18 @@ public class Technology
 public static class Technologies
 {
     public static Technology[] technologies = GetTechnologies();
-    public static bool[] active_technologies = new bool[59];
+    public static bool[] active_technologies = new bool[62];
     public static int[] current_tier = new int[7];
-    public static int currently_researching;
+    public static int currently_researching = -1;
+
+    public static void ResetTechnologies(){
+        active_technologies = new bool[62];
+        current_tier = new int[7];
+        currently_researching = 8;
+    }
 
     private static Technology[] GetTechnologies(){
-        Technology[] tempArray = new Technology[59];
+        Technology[] tempArray = new Technology[62];
         // Cooling
         tempArray[0] = new Technology(10,0,40,0,-1,"Enables cooling for buildings.");
         tempArray[1] = new Technology(30,10,80,1,0,"Increases the overall city coolness.");
@@ -61,7 +62,7 @@ public static class Technologies
         tempArray[18] = new Technology(10,0,40,18,-1,"Enables the building of medical tent buildings.");
         tempArray[19] = new Technology(30,10,80,19,18,"Increases the medical treatment's speed.");
         tempArray[20] = new Technology(30,10,80,20,18,"Decreases the required amount of workers in medical tents.");
-        tempArray[21] = new Technology(100,50,160,21,18,"Enables the building of hospitals and upgrades your medical tents into them.");
+        tempArray[21] = new Technology(100,50,160,21,18,"Enables the building of hospitals.");
         tempArray[22] = new Technology(100,50,160,22,19,"Increases the medical treatment's speed.");
         tempArray[23] = new Technology(200,150,320,23,21,"Decreases the required amount of workers in hospitals.");
         tempArray[24] = new Technology(200,150,320,24,22,"Increases the medical treatment's speed.");
@@ -103,10 +104,13 @@ public static class Technologies
         tempArray[52] = new Technology(10,0,40,52,-1,"Enables the building of scout station buildings.");
         tempArray[53] = new Technology(30,10,80,53,52,"Increases the movement speed of scouts.");
         tempArray[54] = new Technology(30,10,80,54,52,"Increases the carrying capacity of scouts.");
+        tempArray[59] = new Technology(30,10,80,59,52,"Unlocks the scouting for the East.");
         tempArray[55] = new Technology(100,50,160,55,53,"Increases the movement speed of scouts.");
         tempArray[56] = new Technology(100,50,160,56,54,"Increases the carrying capacity of scouts.");
+        tempArray[60] = new Technology(100,50,160,60,59,"Unlocks the scouting for the South.");
         tempArray[57] = new Technology(200,150,320,57,55,"Increases the movement speed of scouts.");
         tempArray[58] = new Technology(200,150,320,58,56,"Increases the carrying capacity of scouts.");
+        tempArray[61] = new Technology(200,150,320,61,60,"Unlocks the scouting for the West.");
         return tempArray;
     }
 
@@ -124,7 +128,6 @@ public static class Technologies
                 Buildings.medical_tent.enable_cooling = true;
                 Buildings.hospital.enable_cooling = true;
                 Buildings.iron_mine.enable_cooling = true;
-                Buildings.solar_panel.enable_cooling = true;
                 Buildings.coal_mine.enable_cooling = true;
                 Buildings.fishermans_hut.enable_cooling = true;
                 Buildings.apple_orchard.enable_cooling = true;
@@ -134,17 +137,17 @@ public static class Technologies
                 break;
             case 1:
                 // Increases the overall city coolness.
-                game_controller.base_cooling += 20;
+                game_controller.base_cooling += 5;
                 current_tier[0] = 2;
                 break;
             case 3:
                 // Increases the overall city coolness.
-                game_controller.base_cooling += 20;
+                game_controller.base_cooling += 5;
                 current_tier[0] = 3;
                 break;
             case 5:
                 // Increases the overall city coolness.
-                game_controller.base_cooling += 20;
+                game_controller.base_cooling += 5;
                 current_tier[0] = 4;
                 break;
             case 2:
@@ -164,20 +167,20 @@ public static class Technologies
                 break;
             case 7:
                 // Enables manual temperature target for buildings.
-                Buildings.pub.target_temperature = 25;
-                Buildings.house_of_pleasure.target_temperature = 25;
-                Buildings.tent.target_temperature = 25;
-                Buildings.house.target_temperature = 25;
-                Buildings.apartment.target_temperature = 25;
-                Buildings.medical_tent.target_temperature = 25;
-                Buildings.hospital.target_temperature = 25;
-                Buildings.iron_mine.target_temperature = 25;
-                Buildings.solar_panel.target_temperature = 25;
-                Buildings.coal_mine.target_temperature = 25;
-                Buildings.fishermans_hut.target_temperature = 25;
-                Buildings.apple_orchard.target_temperature = 25;
-                Buildings.child_cookery.target_temperature = 25;
-                Buildings.science_lab.target_temperature = 25;
+                Buildings.pub.manual_cooling = true;
+                Buildings.house_of_pleasure.manual_cooling = true;
+                Buildings.tent.manual_cooling = true;
+                Buildings.house.manual_cooling = true;
+                Buildings.apartment.manual_cooling = true;
+                Buildings.medical_tent.manual_cooling = true;
+                Buildings.hospital.manual_cooling = true;
+                Buildings.iron_mine.manual_cooling = true;
+                Buildings.solar_panel.manual_cooling = true;
+                Buildings.coal_mine.manual_cooling = true;
+                Buildings.fishermans_hut.manual_cooling = true;
+                Buildings.apple_orchard.manual_cooling = true;
+                Buildings.child_cookery.manual_cooling = true;
+                Buildings.science_lab.manual_cooling = true;
                 current_tier[0] = 4;
                 break;
             
@@ -201,7 +204,19 @@ public static class Technologies
                 // Enables the building of family houses and upgrades your tents into them.
                 Buildings.tent.active = false;
                 Buildings.house.active = true;
-                Buildings.buildings = Buildings.buildings.Select(building => building is Housing.Tent ? Buildings.house : building).ToArray();
+                int[] tiles = new int[0];
+                int[] indexes = new int[0];
+                for(int i=0;i<Buildings.buildings.Length;i++){
+                    if(Buildings.buildings[i].name == "Tent"){
+                        System.Array.Resize(ref tiles, tiles.Length + 1);
+                        tiles[tiles.Length - 1] = Buildings.buildings[i].tile;
+                        System.Array.Resize(ref indexes, indexes.Length + 1);
+                        indexes[indexes.Length - 1] = i;
+                    }
+                }
+                for(int i=0;i<tiles.Length;i++){
+                    Buildings.buildings[indexes[i]] = new Housing.House(tiles[i]);
+                }
                 current_tier[1] = 3;
                 break;
             case 12:
@@ -251,37 +266,59 @@ public static class Technologies
                 break;
             case 19:
                 // Increases the medical treatment's speed.
-                Buildings.medical_tent.treatment_speed -= 0.1F;
-                Buildings.hospital.treatment_speed -= 0.1F;
+                Buildings.medical_tent.treatment_speed += 0.25F;
+                Buildings.hospital.treatment_speed += 0.25F;
                 current_tier[2] = 2;
                 break;
             case 22:
                 // Increases the medical treatment's speed.
-                Buildings.medical_tent.treatment_speed -= 0.1F;
-                Buildings.hospital.treatment_speed -= 0.1F;
+                Buildings.medical_tent.treatment_speed += 0.25F;
+                Buildings.hospital.treatment_speed += 0.25F;
                 current_tier[2] = 3;
                 break;
             case 24:
                 // Increases the medical treatment's speed.
-                Buildings.medical_tent.treatment_speed -= 0.1F;
-                Buildings.hospital.treatment_speed -= 0.1F;
+                Buildings.medical_tent.treatment_speed += 0.25F;
+                Buildings.hospital.treatment_speed += 0.25F;
                 current_tier[2] = 4;
                 break;
             case 20:
                 // Decreases the required amount of workers in medical tents.
                 Buildings.medical_tent.max_workers -= 5;
+                Buildings.UpdateBuildings();
+                foreach(Building building in Buildings.buildings){
+                    if(building is Workplace.Medical.MedicalTent medical_tent){
+                        while(medical_tent.current_workers + medical_tent.children_workers + medical_tent.sick_workers + medical_tent.sick_child_workers > medical_tent.max_workers){
+                            if(medical_tent.current_workers + medical_tent.sick_workers > 0){
+                                Residents.DeAssignWorker(medical_tent);
+                            } else{
+                                Residents.DeAssignChildren(medical_tent);
+                            }
+                        }
+                    }
+                }
                 current_tier[2] = 2;
                 break;
             case 21:
-                // Enables the building of hospitals and upgrades your medical tents into them.
-                Buildings.medical_tent.active = false;
+                // Enables the building of hospitals.
                 Buildings.hospital.active = true;
-                Buildings.buildings = Buildings.buildings.Select(building => building is Workplace.Medical.MedicalTent ? Buildings.hospital : building).ToArray();
                 current_tier[2] = 3;
                 break;
             case 23:
                 // Decreases the required amount of workers in hospitals.
                 Buildings.hospital.max_workers -= 5;
+                Buildings.UpdateBuildings();
+                foreach(Building building in Buildings.buildings){
+                    if(building is Workplace.Medical.Hospital hospital){
+                        while(hospital.current_workers + hospital.children_workers + hospital.sick_workers + hospital.sick_child_workers > hospital.max_workers){
+                            if(hospital.current_workers + hospital.sick_workers > 0){
+                                Residents.DeAssignWorker(hospital);
+                            } else{
+                                Residents.DeAssignChildren(hospital);
+                            }
+                        }
+                    }
+                }
                 current_tier[2] = 4;
                 break;
             
@@ -293,8 +330,19 @@ public static class Technologies
                 break;
             case 26:
                 // Decreases the required amount of workers in fisherman's huts.
-                Debug.Log(Buildings.fishermans_hut.max_workers);
                 Buildings.fishermans_hut.max_workers -= 10;
+                Buildings.UpdateBuildings();
+                foreach(Building building in Buildings.buildings){
+                    if(building is Workplace.Resource.FishermansHut fishermans_hut){
+                        while(fishermans_hut.current_workers + fishermans_hut.children_workers + fishermans_hut.sick_workers + fishermans_hut.sick_child_workers > fishermans_hut.max_workers){
+                            if(fishermans_hut.current_workers + fishermans_hut.sick_workers > 0){
+                                Residents.DeAssignWorker(fishermans_hut);
+                            } else{
+                                Residents.DeAssignChildren(fishermans_hut);
+                            }
+                        }
+                    }
+                }
                 current_tier[3] = 2;
                 break;
             case 27:
@@ -476,7 +524,26 @@ public static class Technologies
                 Buildings.scout_station.carrying_capacity += 500;
                 current_tier[6] = 4;
                 break;
+            case 59:
+                // Unlocks the scouting for the East.
+                Scouting.direction[1] = true;
+                Scouting.storm_direction[1] = true;
+                current_tier[6] = 2;
+                break;
+            case 60:
+                // Unlocks the scouting for the South.
+                Scouting.direction[2] = true;
+                Scouting.storm_direction[2] = true;
+                current_tier[6] = 3;
+                break;
+            case 61:
+                // Unlocks the scouting for the West.
+                Scouting.direction[3] = true;
+                Scouting.storm_direction[3] = true;
+                current_tier[6] = 4;
+                break;
         }
+        Buildings.UpdateBuildings();
     }
 
     private static void DeactivateTechnologyIcons(GameController game_controller){
@@ -653,27 +720,36 @@ public static class Technologies
                 game_controller._technology_4_5.GetComponent<Image>().sprite=Sprites.power_image;
                 break;
             case 6:
-                game_controller._technology_2_2.SetActive(true);
-                game_controller._technology_2_4.SetActive(true);
-                game_controller._technology_next_3_2.SetActive(true);
-                game_controller._technology_3_2.SetActive(true);
-                game_controller._technology_next_3_4.SetActive(true);
-                game_controller._technology_3_4.SetActive(true);
-                game_controller._technology_next_4_2.SetActive(true);
-                game_controller._technology_4_2.SetActive(true);
-                game_controller._technology_next_4_4.SetActive(true);
-                game_controller._technology_4_4.SetActive(true);
+                game_controller._technology_2_1.SetActive(true);
+                game_controller._technology_2_3.SetActive(true);
+                game_controller._technology_2_5.SetActive(true);
+                game_controller._technology_next_3_1.SetActive(true);
+                game_controller._technology_3_1.SetActive(true);
+                game_controller._technology_next_3_3.SetActive(true);
+                game_controller._technology_3_3.SetActive(true);
+                game_controller._technology_next_3_5.SetActive(true);
+                game_controller._technology_3_5.SetActive(true);
+                game_controller._technology_next_4_1.SetActive(true);
+                game_controller._technology_4_1.SetActive(true);
+                game_controller._technology_next_4_3.SetActive(true);
+                game_controller._technology_4_3.SetActive(true);
+                game_controller._technology_next_4_5.SetActive(true);
+                game_controller._technology_4_5.SetActive(true);
 
                 game_controller._technology_1_1.GetComponent<Image>().sprite=Sprites.scout_station_logo;
-                game_controller._technology_2_2.GetComponent<Image>().sprite=Sprites.scout_station_logo;
-                game_controller._technology_2_4.GetComponent<Image>().sprite=Sprites.scout_station_logo;
-                game_controller._technology_3_2.GetComponent<Image>().sprite=Sprites.scout_station_logo;
-                game_controller._technology_3_4.GetComponent<Image>().sprite=Sprites.scout_station_logo;
-                game_controller._technology_4_2.GetComponent<Image>().sprite=Sprites.scout_station_logo;
-                game_controller._technology_4_4.GetComponent<Image>().sprite=Sprites.scout_station_logo;
+                game_controller._technology_2_1.GetComponent<Image>().sprite=Sprites.scout_station_logo;
+                game_controller._technology_2_3.GetComponent<Image>().sprite=Sprites.scout_station_logo;
+                game_controller._technology_2_5.GetComponent<Image>().sprite=Sprites.scout_station_logo;
+                game_controller._technology_3_1.GetComponent<Image>().sprite=Sprites.scout_station_logo;
+                game_controller._technology_3_3.GetComponent<Image>().sprite=Sprites.scout_station_logo;
+                game_controller._technology_3_5.GetComponent<Image>().sprite=Sprites.scout_station_logo;
+                game_controller._technology_4_1.GetComponent<Image>().sprite=Sprites.scout_station_logo;
+                game_controller._technology_4_3.GetComponent<Image>().sprite=Sprites.scout_station_logo;
+                game_controller._technology_4_5.GetComponent<Image>().sprite=Sprites.scout_station_logo;
                 break;
         }
-    }public static int SetOpenTechnology(int id, GameController game_controller){
+    }
+    public static int SetOpenTechnology(int id, GameController game_controller){
         int open_technology = 0;
         switch(game_controller.open_technology_tab){
             case 0:
@@ -742,12 +818,15 @@ public static class Technologies
                 break;
             case 6:
                 open_technology = id==11?52:open_technology;
-                open_technology = id==22?53:open_technology;
-                open_technology = id==24?54:open_technology;
-                open_technology = id==32?55:open_technology;
-                open_technology = id==34?56:open_technology;
-                open_technology = id==42?57:open_technology;
-                open_technology = id==44?58:open_technology;
+                open_technology = id==21?53:open_technology;
+                open_technology = id==23?54:open_technology;
+                open_technology = id==25?59:open_technology;
+                open_technology = id==31?55:open_technology;
+                open_technology = id==33?56:open_technology;
+                open_technology = id==35?60:open_technology;
+                open_technology = id==41?57:open_technology;
+                open_technology = id==43?58:open_technology;
+                open_technology = id==45?61:open_technology;
                 break;
         }
         game_controller._technology_price.text =

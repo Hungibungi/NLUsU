@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
 using UnityEngine;
 
 public static class ResourcesManager
@@ -64,6 +61,12 @@ public static class ResourcesManager
 
     public static void CalculateProduction(int temperature, int base_cooling, int day_cycle){
         int actual_production = 0;
+        food_production = 0;
+        power_production = 0;
+        power_consumption = 0;
+        building_material_production = 0;
+        iron_production = 0;
+        research_speed = 0;
         float actual_food_production_modifier = food_production_modifier;
         float happyness_multiplier = 1F;
         happyness_multiplier = Residents.happyness_state=="happy"?1.25F:happyness_multiplier;
@@ -72,35 +75,38 @@ public static class ResourcesManager
 
         foreach(Building building in Buildings.buildings){
             if(building is Workplace.Resource.ChildCookery child_cookery){
-                actual_food_production_modifier = food_production_modifier * (1 + (child_cookery.food_multiplier - 1) / child_cookery.max_workers * child_cookery.children_workers);
+                actual_food_production_modifier = food_production_modifier * (1 + (child_cookery.food_multiplier - 1) / child_cookery.max_workers * (child_cookery.children_workers + child_cookery.sick_child_workers * child_cookery.sick_efficiency));
             }
         }
 
         foreach(Building building in Buildings.buildings){
             if(building is Workplace.Resource workplace && (workplace.working_hours == 24 || (workplace.working_hours == 12 && day_cycle > 0) || (workplace.working_hours == 8 && day_cycle == 2))){
-                actual_production = (int)(workplace.food_production / workplace.max_workers * (workplace.current_workers * workplace.workers_efficiency + workplace.children_workers * workplace.children_efficiency + workplace.sick_workers * workplace.sick_efficiency));
+                actual_production = (int)(workplace.food_production / workplace.max_workers * (workplace.current_workers * workplace.workers_efficiency + workplace.children_workers * workplace.children_efficiency + workplace.sick_workers * workplace.sick_efficiency + workplace.sick_child_workers * workplace.sick_efficiency));
                 food_production += (int)(actual_production * workplace.food_efficiency * happyness_multiplier * actual_food_production_modifier * (float)(100F - GameOptions.overall_costs * 2F) / 100F);
-                actual_production = (int)(workplace.power_production / workplace.max_workers * (workplace.current_workers * workplace.workers_efficiency + workplace.children_workers * workplace.children_efficiency + workplace.sick_workers * workplace.sick_efficiency));
+                actual_production = (int)(workplace.power_production / workplace.max_workers * (workplace.current_workers * workplace.workers_efficiency + workplace.children_workers * workplace.children_efficiency + workplace.sick_workers * workplace.sick_efficiency + workplace.sick_child_workers * workplace.sick_efficiency));
                 power_production += (int)(actual_production * workplace.power_efficiency * happyness_multiplier * (100 - GameOptions.overall_costs * 2) / 100);
-                actual_production = (int)(workplace.building_material_production / workplace.max_workers * (workplace.current_workers * workplace.workers_efficiency + workplace.children_workers * workplace.children_efficiency + workplace.sick_workers * workplace.sick_efficiency));
+                actual_production = (int)(workplace.building_material_production / workplace.max_workers * (workplace.current_workers * workplace.workers_efficiency + workplace.children_workers * workplace.children_efficiency + workplace.sick_workers * workplace.sick_efficiency + workplace.sick_child_workers * workplace.sick_efficiency));
                 building_material_production += (int)(actual_production * workplace.building_material_efficiency * happyness_multiplier * (100 - GameOptions.overall_costs * 2) / 100);
-                actual_production = (int)(workplace.iron_production / workplace.max_workers * (workplace.current_workers * workplace.workers_efficiency + workplace.children_workers * workplace.children_efficiency + workplace.sick_workers * workplace.sick_efficiency));
+                actual_production = (int)(workplace.iron_production / workplace.max_workers * (workplace.current_workers * workplace.workers_efficiency + workplace.children_workers * workplace.children_efficiency + workplace.sick_workers * workplace.sick_efficiency + workplace.sick_child_workers * workplace.sick_efficiency));
                 iron_production += (int)(actual_production * workplace.iron_efficiency * happyness_multiplier * (100 - GameOptions.overall_costs * 2) / 100);
-                if(workplace.target_temperature != -1){
-                    power_consumption += (int)((temperature - base_cooling - workplace.coolness - workplace.coolness_modifier) * cooling_efficiency);
+                if(workplace.enable_cooling){
+                    int temp_consumption = (int)((temperature - base_cooling - workplace.coolness - workplace.coolness_modifier - workplace.target_temperature) * cooling_efficiency);
+                    temp_consumption = temp_consumption > 0 ? -temp_consumption : 0;
+                    power_consumption += temp_consumption;
                 }
             }
             if(building is Housing housing){
-                if(housing.target_temperature != -1){
-                    power_consumption += (int)((temperature - base_cooling - housing.coolness - housing.coolness_modifier) * cooling_efficiency);
+                if(housing.enable_cooling){
+                    int temp_consumption = (int)((temperature - base_cooling - housing.coolness - housing.coolness_modifier - housing.target_temperature) * cooling_efficiency);
+                    temp_consumption = temp_consumption > 0 ? -temp_consumption : 0;
+                    power_consumption += temp_consumption;
                 }
             }
             if(building is Workplace.ScienceLab science_lab && (science_lab.working_hours == 24 || (science_lab.working_hours == 12 && day_cycle > 0) || (science_lab.working_hours == 8 && day_cycle == 2))){
-                science_lab.science_production = (int)(science_lab.current_workers * science_lab.workers_efficiency + science_lab.children_workers * science_lab.children_efficiency + science_lab.sick_workers * science_lab.sick_efficiency);
+                science_lab.science_production = (int)(science_lab.current_workers * science_lab.workers_efficiency + science_lab.children_workers * science_lab.children_efficiency + science_lab.sick_workers * science_lab.sick_efficiency + science_lab.sick_child_workers * science_lab.sick_efficiency);
                 research_speed += science_lab.science_production;
             }
         }
-
         food_consumption = (int)(Residents.residents.Length * Residents.food_amount_modifier * -0.1);
         building_material_consumption = 0;
         iron_consumption = 0;
@@ -108,23 +114,24 @@ public static class ResourcesManager
 
     public static void GainHourlyResources(){
         food += food_consumption + food_production;
-        food_production = 0;
         food = food<0?0:food;
         food = food>GetFoodStorage()?GetFoodStorage():food;
         power += power_consumption + power_production;
-        power_production = 0;
         power = power<0?0:power;
         power = power>GetPowerStorage()?GetPowerStorage():power;
         building_material += building_material_consumption + building_material_production;
-        building_material_production = 0;
         building_material = building_material<0?0:building_material;
         building_material = building_material>GetBuildingMaterialStorage()?GetBuildingMaterialStorage():building_material;
         iron += iron_consumption + iron_production;
-        iron_production = 0;
         iron = iron<0?0:iron;
         iron = iron>GetIronStorage()?GetIronStorage():iron;
         research_progress += research_speed;
-        research_speed = 0;
+
+        if(power == 0){
+            Buildings.able_to_cool = false;
+        } else{
+            Buildings.able_to_cool = true;
+        }
     }
 
     public static bool CanAfford(int required_food, int required_power, int required_building_material, int required_iron){

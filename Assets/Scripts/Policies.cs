@@ -1,9 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using UnityEngine;
-
 public class Policy
 {
     public int cooldown_time;
@@ -24,6 +18,12 @@ public static class Policies
     public static Policy[] policies = GetPolicies();
     public static bool[] active_policies = new bool[45];
     public static int next_policy = 0;
+
+    public static void ResetPolicies(){
+        policies = GetPolicies();
+        active_policies = new bool[45];
+        next_policy = 0;
+    }
 
     private static Policy[] GetPolicies(){
         Policy[] tempArray = new Policy[45];
@@ -68,7 +68,7 @@ public static class Policies
 
         // Resources
         tempArray[33] = new Policy(24,33,-1,"Enables the use of emergency 24 hour shifts, but heavily decreases happyness when in use.");
-        tempArray[34] = new Policy(48,34,33,"Decreases the happyness penalty for the use of emergency shifts.");
+        tempArray[34] = new Policy(48,34,33,"Decreases the happyness penalty for the use of emergency/extended shifts.");
         tempArray[35] = new Policy(72,35,34,"Enables the use of extended 12 hour shifts, but decreases the happyness when in use.");
         tempArray[36] = new Policy(24,36,-1,"Enables the use of children in resource workplaces, but heavily decreases happyness when in use.");
         tempArray[37] = new Policy(48,37,36,"Increases the working efficiency of child workers.");
@@ -246,11 +246,10 @@ public static class Policies
                 Buildings.coal_mine.emergency_work = true;
                 Buildings.fishermans_hut.emergency_work = true;
                 Buildings.apple_orchard.emergency_work = true;
-                Buildings.child_cookery.emergency_work = true;
                 Buildings.science_lab.emergency_work = true;
                 break;
             case 34:
-                // Decreases the happyness penalty for the use of emergency shifts.
+                // Decreases the happyness penalty for the use of emergency/extended shifts.
                 Residents.emergency_shift_happyness = -1;
                 break;
             case 35:
@@ -261,7 +260,6 @@ public static class Policies
                 Buildings.coal_mine.extended_work = true;
                 Buildings.fishermans_hut.extended_work = true;
                 Buildings.apple_orchard.extended_work = true;
-                Buildings.child_cookery.extended_work = true;
                 Buildings.science_lab.extended_work = true;
                 break;
             case 36:
@@ -319,5 +317,6 @@ public static class Policies
                 game_controller.leader_type = 3;
                 break;
         }
+        Buildings.UpdateBuildings();
     }
 }

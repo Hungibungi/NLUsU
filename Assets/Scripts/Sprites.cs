@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 public static class Sprites
 {
-    public static Sprite szeged_image = LoadSprite("szeged");
-    public static Sprite prague_image= LoadSprite("prague");
+    public static Sprite szeged_image = LoadSprite("Game/UI/map");
+    public static Sprite prague_image= LoadSprite("Game/UI/map2");
     public static Sprite temperature_image = LoadSprite("Menus/temperature");
     public static Sprite sick_image = LoadSprite("Menus/sick");
     public static Sprite child_image = LoadSprite("Menus/children");
@@ -32,6 +31,21 @@ public static class Sprites
     public static Sprite science_lab_logo = LoadSprite("Buildings/Logos/science_lab");
     public static Sprite scout_station_logo = LoadSprite("Buildings/Logos/scout_station");
     public static Sprite warehouse_logo = LoadSprite("Buildings/Logos/warehouse");
+    public static Sprite abandoned_town = LoadSprite("Menus/abandoned_town");
+    public static Sprite burning_town = LoadSprite("Menus/burning_town");
+    public static Sprite graveyard = LoadSprite("Menus/graveyard");
+    public static Sprite lighthouse = LoadSprite("Menus/lighthouse");
+    public static Sprite truck_bones = LoadSprite("Menus/truck_bones");
+    public static Sprite smoke = LoadSprite("Menus/smoke");
+    public static Sprite old_church = LoadSprite("Menus/old_church");
+    public static Sprite help_city = LoadSprite("Menus/help_city");
+    public static Sprite sad_city = LoadSprite("Menus/sad_city");
+    public static Sprite happy_city = LoadSprite("Menus/happy_city");
+    public static Sprite day = LoadSprite("Menus/day");
+    public static Sprite extended_day = LoadSprite("Menus/extended_day");
+    public static Sprite night = LoadSprite("Menus/night");
+    public static Sprite build = LoadSprite("Menus/buildings");
+
 
     public static Sprite LoadSprite(string spriteName)
     {

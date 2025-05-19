@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public static class Coordinates
@@ -20,11 +18,8 @@ public static class Coordinates
     public static string szeged_text = 
         "The first city built underground to protect against the weather.\n"+
         "\n"+
-        "This coordinate offers a medium size, close resources and no obstacles to block buildings.";
-    public static string prague_text= 
-        "The first city built undeasdaskdléasd.\n"+
-        "\n"+
-        "This coordinate offers a medium size, close resources and no obstacles to block buildings.";
+        "This coordinate offers a lot of space for buildings, so you don't have to worry about building too many of them.";
+    public static string prague_text= "COMING SOON!";
     public static Coordinate[] coordinates = GetCoordinates();    
 
     public static Coordinate[] GetCoordinates(){

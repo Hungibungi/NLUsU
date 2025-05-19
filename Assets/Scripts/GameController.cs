@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -233,13 +230,80 @@ public class GameController : MonoBehaviour
     public Button _building_slot_3_add_child;
     [SerializeField]
     public Button _building_slot_3_remove_child;
+    [SerializeField]
+    public  GameObject _scouting_1_1;
+    [SerializeField]
+    public  GameObject _scouting_2_1;
+    [SerializeField]
+    public  GameObject _scouting_2_2;
+    [SerializeField]
+    public  GameObject _scouting_2_3;
+    [SerializeField]
+    public  GameObject _scouting_2_4;
+    [SerializeField]
+    public  GameObject _scouting_2_5;
+    [SerializeField]
+    public  GameObject _scouting_next_3_1;
+    [SerializeField]
+    public  GameObject _scouting_3_1;
+    [SerializeField]
+    public  GameObject _scouting_next_3_2;
+    [SerializeField]
+    public  GameObject _scouting_3_2;
+    [SerializeField]
+    public  GameObject _scouting_next_3_3;
+    [SerializeField]
+    public  GameObject _scouting_3_3;
+    [SerializeField]
+    public  GameObject _scouting_next_3_4;
+    [SerializeField]
+    public  GameObject _scouting_3_4;
+    [SerializeField]
+    public  GameObject _scouting_next_3_5;
+    [SerializeField]
+    public  GameObject _scouting_3_5;
+    [SerializeField]
+    public  GameObject _scouting_next_4_1;
+    [SerializeField]
+    public  GameObject _scouting_4_1;
+    [SerializeField]
+    public  GameObject _scouting_next_4_2;
+    [SerializeField]
+    public  GameObject _scouting_4_2;
+    [SerializeField]
+    public  GameObject _scouting_next_4_3;
+    [SerializeField]
+    public  GameObject _scouting_4_3;
+    [SerializeField]
+    public  GameObject _scouting_next_4_4;
+    [SerializeField]
+    public  GameObject _scouting_4_4;
+    [SerializeField]
+    public  GameObject _scouting_next_4_5;
+    [SerializeField]
+    public  GameObject _scouting_4_5;
+    [SerializeField]
+    public  GameObject _scouting_menu;
+    [SerializeField]
+    public  Text _scouting_time;
+    [SerializeField]
+    public  Text _scouting_description;
+    public Text _working_hours_slot1;
+    public Text _working_hours_slot2;
+    public Text _working_hours_slot3;
+    [SerializeField]
+    public GameObject building_info;
+    [SerializeField]
+    public GameObject building_menu;
+    [SerializeField]
+    public GameObject chosen_map;
     public ReadSaveSlotInfoInGame read_save_slot_info;
     
 
     //variables
     public int start_time;
     public int elapsed_hours = 0;
-    public int current_hours = 1;
+    public int current_hours = 0;
     public bool morning = true;
     public int current_days = 1;
     public int prev_remainder = 0;
@@ -262,20 +326,31 @@ public class GameController : MonoBehaviour
     public int open_building_tab;
     public int open_people_tab;
     public bool build_intent;
+    public int open_scouting_tab;
+    public int open_scouting;
+    public Building open_building;
+    public int open_tile;
 
     void Start(){
         ChangeGameSpeed(1);
 
+        // Reset previous game data
+        Residents.ResetResidents();
+        Buildings.ResetBuildings();
+        Technologies.ResetTechnologies();
+        Policies.ResetPolicies();
+        Scouting.ResetScouting(this);
+
         // clock widget
+        current_hours = 6;
         start_time = (int)Time.time;
-        _clock.text = "1 am";
+        _clock.text = "6 am";
         _game_speed.text = "1x";
 
         // day cycle widget
         AdjustDayCycle();
 
         // resources widget
-        Buildings.buildings[0] = new Building.Warehouse();
         ResourcesManager.food = 25 * GameOptions.starting_resources;
         ResourcesManager.power = 100 * GameOptions.starting_resources;
         ResourcesManager.building_material = 50 * GameOptions.starting_resources;
@@ -283,7 +358,7 @@ public class GameController : MonoBehaviour
         ResourcesManager.RefreshResourcesWidget(this);
 
         // weather widget
-        target_temperature = 30 + (5 * (-3 + GameOptions.starting_temperature));
+        target_temperature = 50 + (5 * (-3 + GameOptions.starting_temperature));
         temperature = target_temperature;
         next_trend_time = 55;
         next_storm_time = 24 * (14 - (3 - GameOptions.first_storm_timer)) + 7;
@@ -298,6 +373,10 @@ public class GameController : MonoBehaviour
 
         // residents widget
         AdjustResidents();
+
+        // scouting map
+        _scouting_menu.GetComponent<Button>().interactable = false;
+        _scouting_menu.GetComponent<Image>().color = Color.red;
 
         // starting technologies
         switch(GameOptions.starting_technologies){
@@ -325,6 +404,9 @@ public class GameController : MonoBehaviour
                 Technologies.ActivateTechnology(52, this);
                 break;
         }
+
+        // starting tiles
+        AdjustTileIcons();
 
         if(GameOptions.game_controller != null){
             LoadGameController(GameOptions.game_controller);
@@ -408,7 +490,20 @@ public class GameController : MonoBehaviour
         AdjustResidents();
         AdjustHappyness();
         AdjustSideMenu();
+        AdjustScouting();
+        AdjustTileIcons();
         Buildings.UpdateBuildings();
+
+        ChangePoliciesDisplayed(open_policy_tab);
+        if(Scouting.direction[open_scouting_tab]){
+            ChangeScoutingDisplayed(open_scouting_tab);
+        }
+        ChangeTechnologiesDisplayed(open_technology_tab);
+        if(build_intent){
+            ChangeBuildingsDisplayed(open_building_tab);
+        } else{
+            ChangeBuildingsDisplayed(open_people_tab);
+        }
     }
 
     private void CheckSave(){
@@ -518,6 +613,7 @@ public class GameController : MonoBehaviour
         if(elapsed_hours < next_storm_time){
             _next_storm.text = "in " + ((int)(next_storm_time - elapsed_hours) / 24) + "d" + (next_storm_time - elapsed_hours) % 24 + "h";
             _next_storm.color = Color.black;
+            Scouting.EndStorm();
         } else {
             InStorm();
         }
@@ -562,7 +658,9 @@ public class GameController : MonoBehaviour
     private void InStorm(){
         _next_storm.text = ((int)(GameOptions.storm_duration * 24 - current_storm_hour) / 24) + "d" + (GameOptions.storm_duration * 24 - current_storm_hour) % 24 + "h LEFT!";
         _next_storm.color = Color.red;
-        if(current_storm_hour == 0 && !is_first_storm){
+        if(current_storm_hour == 0){
+            Residents.food_amount_modifier *= 1.5F;
+            Scouting.StormReset(this);
             switch(GameOptions.storm_intensity){
                 case 1:
                     target_temperature = target_temperature + 10;
@@ -589,9 +687,6 @@ public class GameController : MonoBehaviour
                     temperature = temperature + 60;
                     break;
             }
-        } else if(current_storm_hour == 0 && is_first_storm){
-            target_temperature = target_temperature + 10;
-            temperature = temperature + 20;
         }
         _temperature.text = temperature + "°C ";
         _temperature.color = (temperature - target_temperature) > 0 ? Color.red : Color.blue;
@@ -602,7 +697,6 @@ public class GameController : MonoBehaviour
         } else{
             current_storm_hour = 0;
             if(is_first_storm){
-                temperature = temperature - 10;
                 is_first_storm = false;
                 _leading_way.SetActive(true);
             } else {
@@ -643,28 +737,44 @@ public class GameController : MonoBehaviour
     private void AdjustSick(){
         foreach(Resident res in Residents.residents){
             if(!res.is_sick){
-                int multiplier = (res.overall_temperature - 25)>=0?0:res.overall_temperature - 25;
-                bool rng = UnityEngine.Random.Range(0, 999) < 1 + multiplier / 24;
-                if(rng && !res.is_sick){
+                int temperature_multiplier = res.overall_temperature>25?(int)Math.Pow(1.25, res.overall_temperature-25):0;
+                int food_multiplier = ResourcesManager.food>0?0:99;
+                bool rng = UnityEngine.Random.Range(0, 999) < (1 + temperature_multiplier + food_multiplier);
+                if(rng){
                     Residents.GotSick(res, elapsed_hours);
                 }
             }
             if(res.is_sick && res.medical == null){
-                bool rng = UnityEngine.Random.Range(0, 200) < 2;
-                if(rng){
-                    Residents.Died(res);
+                foreach(Building building in Buildings.buildings){
+                    if(building is Workplace.Medical medical){
+                        if(medical.max_sick > medical.current_sick){
+                            medical.current_sick++;
+                            res.medical = medical;
+                            res.start_treatment = elapsed_hours;
+                            break;
+                        }
+                    }
                 }
-                rng = UnityEngine.Random.Range(0, 200) < 1;
-                if(rng){
-                    Residents.Recovered(res);
+                if(res.medical == null){
+                    bool rng = UnityEngine.Random.Range(0, 200) < 2;
+                    if(rng){
+                        Residents.Died(res);
+                    }
+                    rng = UnityEngine.Random.Range(0, 200) < 1;
+                    if(rng){
+                        Residents.Recovered(res);
+                    }
                 }
             }
             if(res.medical != null){
-                float effective_treatment_speed = 1 / (res.medical.treatment_speed * (res.medical.current_workers * res.medical.workers_efficiency + res.medical.children_workers * res.medical.children_efficiency + res.medical.sick_workers * res.medical.sick_efficiency));
+                float effective_treatment_speed = 0;
+                if((res.medical.treatment_speed * (res.medical.current_workers * res.medical.workers_efficiency + res.medical.children_workers * res.medical.children_efficiency + res.medical.sick_workers * res.medical.sick_efficiency + res.medical.sick_child_workers * res.medical.sick_efficiency) / res.medical.max_workers * res.medical.working_hours / 24) > 0){
+                    effective_treatment_speed = 1 / (res.medical.treatment_speed * (res.medical.current_workers * res.medical.workers_efficiency + res.medical.children_workers * res.medical.children_efficiency + res.medical.sick_workers * res.medical.sick_efficiency + res.medical.sick_child_workers * res.medical.sick_efficiency) / res.medical.max_workers * res.medical.working_hours / 24);
+                }
                 if(effective_treatment_speed == 0){
                     res.medical.current_sick--;
                     res.medical = null;
-                } else if(res.start_treatment + (int)(effective_treatment_speed * 72) == elapsed_hours){
+                } else if(res.start_treatment + (int)(effective_treatment_speed * 144) >= elapsed_hours){
                     Residents.Recovered(res);
                 }
             }
@@ -902,7 +1012,7 @@ public class GameController : MonoBehaviour
     }
 
     private void AdjustSideMenu(){
-        if(Policies.next_policy == elapsed_hours){
+        if(Policies.next_policy <= elapsed_hours){
             _law_menu.GetComponent<Image>().color = Color.black;
             _law_menu.GetComponent<Button>().interactable = true;
         }
@@ -962,5 +1072,102 @@ public class GameController : MonoBehaviour
         AdjustResidents();
         ResourcesManager.CalculateProduction(temperature, base_cooling, day_cycle);
         ResourcesManager.RefreshResourcesWidget(this);
+    }
+
+    public void ChangeScoutingDisplayed(int page){
+        open_scouting_tab = page;
+        Scouting.ChangeScoutingDisplayed(page, this);
+    }
+
+    public void SetOpenScouting(int id){
+        open_scouting = Scouting.SetOpenScouting(id, this);
+    }
+
+    public void ChooseScouting(){
+        Scouting.StartScouting(this, open_scouting);
+    }
+
+    public void AdjustScouting(){
+        for(int i = 0; i < 4; i++){
+            if(elapsed_hours >= Scouting.finish_travel[i] && Scouting.traveling[i]){
+                if(Scouting.current_location[i] != -1){
+                    Scouting.nodes[i][Scouting.current_location[i]].visited = true;
+                    Scouting.LootResources(i);
+                } else{
+                    Scouting.DepositLoot(i);
+                }
+                Scouting.traveling[i] = false;
+            }
+        }
+        if(Scouting.direction[0]){
+            if(Scouting.IsScoutReady()){
+                _scouting_menu.GetComponent<Image>().color = Color.green;
+            } else{
+                _scouting_menu.GetComponent<Image>().color = Color.black;
+            }
+        }
+    }
+
+    public void ChangeWorkingHours(int building_id){
+        Buildings.ChangeWorkHours(building_id, this);
+    }
+
+    public void OpenTileInfo(int tile_id){
+        Buildings.GetTileInfo(tile_id, this);
+    }
+
+    public void RefreshTileInfo(){
+        Buildings.GetTileInfo(open_tile, this);
+    }
+
+    public void ChangeBuildingWorkHours(){
+        Buildings.ChangeBuildingWorkHours(this);
+    }
+
+    public void ManageBuildingWorkers(int option){
+        foreach (Building building in Buildings.buildings){
+            if(building.tile == open_tile && building is Workplace workplace){
+                switch(option){
+                    case 0:
+                        Residents.AssignWorker(workplace);
+                        break;
+                    case 1:
+                        Residents.DeAssignWorker(workplace);
+                        break;
+                    case 2:
+                        Residents.AssignChildren(workplace);
+                        break;
+                    case 3:
+                        Residents.DeAssignChildren(workplace);
+                        break;
+                }
+                break;
+            }
+        }
+    }
+
+    public void AdjustTileIcons(){
+        for(int i = 0; i < 68;i++){
+            bool empty = true;
+            foreach(Building building in Buildings.buildings){
+                if(building.tile == i){
+                    chosen_map.transform.Find("tile_"+i).GetComponent<Image>().sprite = building.icon;
+                    empty = false;
+                    break;
+                }
+            }
+            if(empty){
+                chosen_map.transform.Find("tile_"+i).GetComponent<Image>().sprite = Sprites.build;
+            }
+        }
+    }
+
+    public void ChangeTargetTemperature(int change){
+        foreach(Building building in Buildings.buildings){
+                if(building.tile == open_tile){
+                    building.target_temperature += change;
+                    break;
+                }
+            }
     }
 }

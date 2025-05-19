@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
@@ -87,7 +85,7 @@ public static class SaveController
             overall_discontent = GameOptions.overall_discontent,
             storm_duration = GameOptions.storm_duration,
             storm_intensity = GameOptions.storm_intensity });
-        string game_controller = JsonConvert.SerializeObject(new {
+        /*string game_controller = JsonConvert.SerializeObject(new {
             elapsed_hours = stripped_game_controller.elapsed_hours,
             current_hours = stripped_game_controller.current_hours,
             morning = stripped_game_controller.morning,
@@ -104,9 +102,10 @@ public static class SaveController
             protest_hours = stripped_game_controller.protest_hours,
             base_cooling = stripped_game_controller.base_cooling,
             leader_type = stripped_game_controller.leader_type });
-        string buildings = JsonConvert.SerializeObject(new { buildings = Buildings.buildings });
-        string residents = JsonConvert.SerializeObject(new { residents = Residents.residents });
-        SaveData save_data = new SaveData(game_options, game_controller, buildings, residents);
+        */
+        //string buildings = JsonConvert.SerializeObject(new { buildings = Buildings.buildings });
+        //string residents = JsonConvert.SerializeObject(new { residents = Residents.residents });
+        SaveData save_data = new SaveData(game_options, "game_controller", "buildings", "residents");
         BinaryFormatter formatter = new BinaryFormatter();
         FileStream stream = new FileStream(path, FileMode.Create);
         formatter.Serialize(stream, save_data);
